@@ -1,0 +1,107 @@
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import "./index.css";
+
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Education from "./components/Education";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+
+import ProjectForm from "./components/ProjectForm";
+import ProjectList from "./components/ProjectList";
+
+import { getProjects } from "./services/projectService";
+
+function Portfolio({ darkMode, setDarkMode }) {
+  return (
+    <div className={darkMode ? "dark-theme" : "light-theme"}>
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+
+      <Hero />
+      <About />
+      <Education />
+      <Skills />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  );
+}
+
+function Admin({ darkMode, setDarkMode }) {
+  const [projects, setProjects] = useState([]);
+  const [editingProject, setEditingProject] = useState(null);
+
+  const fetchProjects = async () => {
+  try {
+    const response = await getProjects();
+    setProjects(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  return (
+    <div className={darkMode ? "dark-theme" : "light-theme"}>
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+
+      <div style={{ padding: "120px 10%" }}>
+        <ProjectForm
+          fetchProjects={fetchProjects}
+          editingProject={editingProject}
+          setEditingProject={setEditingProject}
+        />
+
+        <br />
+
+        <ProjectList
+          projects={projects}
+          fetchProjects={fetchProjects}
+          setEditingProject={setEditingProject}
+        />
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  console.log("App Loaded");
+  const [darkMode, setDarkMode] = useState(false);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Portfolio
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <Admin
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
