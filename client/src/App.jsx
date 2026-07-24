@@ -84,7 +84,12 @@ function Admin({ darkMode, setDarkMode }) {
       />
 
 
-      <div style={{ padding: "120px 10%" }}>
+      <main className="admin-page">
+        <div className="admin-inner">
+          <div className="admin-heading">
+            <h1>Project dashboard</h1>
+            <p>Add and manage the work featured in your portfolio.</p>
+          </div>
 
         <ProjectForm
           fetchProjects={fetchProjects}
@@ -93,16 +98,14 @@ function Admin({ darkMode, setDarkMode }) {
         />
 
 
-        <br />
-
-
         <ProjectList
           projects={projects}
           fetchProjects={fetchProjects}
           setEditingProject={setEditingProject}
         />
 
-      </div>
+        </div>
+      </main>
 
     </div>
   );
