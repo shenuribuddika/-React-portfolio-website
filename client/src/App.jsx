@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 
@@ -17,10 +17,15 @@ import ProjectList from "./components/ProjectList";
 
 import { getProjects } from "./services/projectService";
 
+
 function Portfolio({ darkMode, setDarkMode }) {
   return (
     <div className={darkMode ? "dark-theme" : "light-theme"}>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+      
+      <Navbar 
+        darkMode={darkMode} 
+        setDarkMode={setDarkMode} 
+      />
 
       <Hero />
       <About />
@@ -29,57 +34,82 @@ function Portfolio({ darkMode, setDarkMode }) {
       <Projects />
       <Contact />
       <Footer />
+
     </div>
   );
 }
 
+
 function Admin({ darkMode, setDarkMode }) {
+
   const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
 
+
   const fetchProjects = async () => {
-  try {
-    const response = await getProjects();
-    setProjects(response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+    try {
+      const response = await getProjects();
+      setProjects(response.data);
+    } 
+    catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
 
   useEffect(() => {
     fetchProjects();
   }, []);
 
+
   return (
     <div className={darkMode ? "dark-theme" : "light-theme"}>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+
+      <Navbar 
+        darkMode={darkMode} 
+        setDarkMode={setDarkMode} 
+      />
+
 
       <div style={{ padding: "120px 10%" }}>
+
         <ProjectForm
           fetchProjects={fetchProjects}
           editingProject={editingProject}
           setEditingProject={setEditingProject}
         />
 
+
         <br />
+
 
         <ProjectList
           projects={projects}
           fetchProjects={fetchProjects}
           setEditingProject={setEditingProject}
         />
+
       </div>
+
     </div>
   );
 }
 
+
+
 function App() {
+
   console.log("App Loaded");
+
   const [darkMode, setDarkMode] = useState(false);
 
+
   return (
-    <BrowserRouter>
+
+    <HashRouter>
+
       <Routes>
+
         <Route
           path="/"
           element={
@@ -90,6 +120,7 @@ function App() {
           }
         />
 
+
         <Route
           path="/admin"
           element={
@@ -99,9 +130,15 @@ function App() {
             />
           }
         />
+
+
       </Routes>
-    </BrowserRouter>
+
+    </HashRouter>
+
   );
+
 }
+
 
 export default App;
