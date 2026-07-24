@@ -1,16 +1,18 @@
+import { Link } from "react-router-dom";
+
 function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="navbar">
       <div className="logo">SB</div>
 
       <ul className="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#/admin">Admin</a></li>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/education">Education</Link></li>
+        <li><Link to="/skills">Skills</Link></li>
+        <li><Link to="/projects">Projects</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+        <li><Link to="/admin">Admin</Link></li>
       </ul>
 
       <button onClick={() => setDarkMode(!darkMode)}>

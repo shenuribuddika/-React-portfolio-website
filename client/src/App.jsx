@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route, useParams } from "react-router-dom";
 
 import "./index.css";
 
@@ -18,7 +18,20 @@ import ProjectList from "./components/ProjectList";
 import { getProjects } from "./services/projectService";
 
 
-function Portfolio({ darkMode, setDarkMode }) {
+function Portfolio ({ darkMode, setDarkMode }) {
+  const { section } = useParams();
+
+  useEffect(() => {
+    if (section) {
+      const target = document.getElementById(section);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [section]);
+
   return (
     <div className={darkMode ? "dark-theme" : "light-theme"}>
       
@@ -109,7 +122,6 @@ function App() {
     <HashRouter>
 
       <Routes>
-
         <Route
           path="/"
           element={
@@ -119,7 +131,6 @@ function App() {
             />
           }
         />
-
 
         <Route
           path="/admin"
@@ -131,7 +142,15 @@ function App() {
           }
         />
 
-
+        <Route
+          path="/:section"
+          element={
+            <Portfolio
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          }
+        />
       </Routes>
 
     </HashRouter>
